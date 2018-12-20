@@ -1,0 +1,28 @@
+@startuml
+entity ClientApp
+control Sender
+entity ServerSvc
+database PortsPool
+collections Receiver
+ClientApp -> Sender: Create sender
+Sender -> Sender : Open Input
+Sender -> ServerSvc: Get Ports
+ServerSvc -> PortsPool : Get Ports
+PortsPool -> ServerSvc : Return Free Ports
+ServerSvc -> Sender : Return ports
+Sender -> Sender: Create Ouputs, make SDP
+Sender -> ServerSvc: Send SDP
+ServerSvc -> Receiver: Create Receiver
+Receiver -> Receiver: Start Linsten SDP, create Output
+Receiver -> ServerSvc: Listen Started
+ServerSvc -> Sender: Send OK
+Sender -> Receiver: Send Video Stream
+Sender -> Receiver: Send Audio Stream
+Receiver -> Receiver: Process packets
+Sender -> Sender: Stop send packets
+Receiver -> Receiver: Stop listening by timeout, finally write file
+Receiver -> ServerSvc: Return Ports, uninitilze
+ServerSvc -> PortsPool: Return Ports
+ServerSvc -> ServerSvc: Remove Receiver
+@enduml
+
