@@ -269,10 +269,6 @@ public:
 
         LOG(sdp);
 
-        std::ofstream sdpfile("/home/vgrinko/sdp.sdp");
-        sdpfile.write(sdp+1, strlen(sdp)-1);
-        sdpfile.close();
-
         boost::asio::write(s, boost::asio::buffer(sdp, strlen(sdp)+1));
 
         uint8_t sdpreply[2] = {};
